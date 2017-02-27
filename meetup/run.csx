@@ -20,7 +20,7 @@ public static void Run(TimerInfo myTimer, TraceWriter log)
     const double LON = -1.0860970020294189;
     const double LARGEST_DISTANCE = 25;
 
-    var meetupToken = ConfigurationManager.AppSettings["MEETUPTOKEN"]
+    var meetupToken = ConfigurationManager.AppSettings["MEETUPTOKEN"];
     var client = PrepareHttpClient(new Uri(URL));
     var events = GET<List<Event>>(client, $"/recommended/events?sign=true&key={meetupToken}&fields=group_photo&topic_category=" + TECH);
     var geoData = new GeoData();
