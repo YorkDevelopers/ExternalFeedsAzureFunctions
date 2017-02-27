@@ -25,7 +25,7 @@ public static void Run(TimerInfo myTimer, TraceWriter log)
 
     // Use the EventBrite API to find all the Science and Tech events in York
     var token = ConfigurationManager.AppSettings["EVENTBRITETOKEN"];
-    var client = PrepareHttpClient(new Uri(URL), token;
+    var client = PrepareHttpClient(new Uri(URL), token);
     var events = GET<Responses>(client, $"/v3/events/search/?location.address=York&categories={CATEGORY}");
 
     // Take all the events and convert them into our 'Commmon' event format
