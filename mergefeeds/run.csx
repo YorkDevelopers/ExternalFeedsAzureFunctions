@@ -15,7 +15,7 @@ public static void Run(TimerInfo myTimer, TraceWriter log)
 
             const string TARGETFILENAME = "_data/Events.yml";
 
-            var gitHub = new GitHub();
+            var gitHub = new GitHub(log);
             var deserializer = new Deserializer();
 
             var allEvents = new List<Common>();
@@ -26,7 +26,7 @@ public static void Run(TimerInfo myTimer, TraceWriter log)
                 allEvents.AddRange(extraEvents);
             }
 
-            var serializer = new Serializer(log);
+            var serializer = new Serializer();
             var yamlAll = serializer.Serialize(allEvents.Where(evt => evt.Starts > System.DateTime.Now));
 
             gitHub.WriteFileToGitHub(TARGETFILENAME, yamlAll);
