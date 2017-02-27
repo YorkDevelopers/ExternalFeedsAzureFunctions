@@ -28,7 +28,7 @@ public static void Run(TimerInfo myTimer, TraceWriter log)
     var yaml = serializer.Serialize(allEvents);
 
     // Push the file to git
-    var gitHubClient = new GitHub();
+    var gitHubClient = new GitHub(log);
     gitHubClient.WriteFileToGitHub("_data/YPS.yml", yaml);
 }
 
