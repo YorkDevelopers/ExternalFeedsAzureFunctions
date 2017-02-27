@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using Octokit;
+using System.Configuration;
 
 public class GitHub
 {
@@ -14,8 +15,9 @@ public class GitHub
     public GitHub(TraceWriter log)
     {
         // Set up our credentials to access git hub
+        var token = ConfigurationManager.AppSettings["GITHUBTOKEN"];
         this.gitHubClient = new GitHubClient(new ProductHeaderValue("yorkDevelopersFeed"));
-        this.gitHubClient.Credentials = new Credentials("");
+        this.gitHubClient.Credentials = new Credentials(token);
 
         this.log = log;
     }

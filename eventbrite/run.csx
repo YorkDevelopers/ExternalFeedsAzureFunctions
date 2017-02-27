@@ -4,6 +4,7 @@
 #load "responses.csx"
 
 using System;
+using System.Configuration;
 using System.Linq;
 using System.Collections.Generic;
 using System.Net;
@@ -23,7 +24,8 @@ public static void Run(TimerInfo myTimer, TraceWriter log)
     var venues = new Dictionary<string, Venue>();
 
     // Use the EventBrite API to find all the Science and Tech events in York
-    var client = PrepareHttpClient(new Uri(URL), "");
+    var token = ConfigurationManager.AppSettings["EVENTBRITETOKEN"];
+    var client = PrepareHttpClient(new Uri(URL), token;
     var events = GET<Responses>(client, $"/v3/events/search/?location.address=York&categories={CATEGORY}");
 
     // Take all the events and convert them into our 'Commmon' event format
