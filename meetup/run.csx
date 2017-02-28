@@ -29,8 +29,24 @@ public static void Run(TimerInfo myTimer, TraceWriter log)
     foreach (var evt in events)
     {
         // Is this event near to us?
-        var distance = geoData.distance(LAT, LON, evt.venue.lat, evt.venue.lon, 'M');
-        if (distance <= LARGEST_DISTANCE)
+        var nearUs = false;
+
+        if (evt.venue == null)
+        {
+            // We don't have a venue,  so the best we can do is to check to see if the word York is 
+            // in the description,  groupname or URL.
+            nearUs = evt.name.ToLower().Contains("york") ||
+                     evt.description.ToLower().Contains("york") ||
+                     evt.link.ToLower().Contains("york");
+        }
+        else
+        {
+            // We know the venue for the event,  so we can check that it's within X miles
+            var distance = geoData.distance(LAT, LON, evt.venue.lat, evt.venue.lon, 'M');
+            nearUs = (distance <= LARGEST_DISTANCE);
+        }
+
+        if (nearUs)
         {
             var common = new Common();
             common.Name = evt.name;
