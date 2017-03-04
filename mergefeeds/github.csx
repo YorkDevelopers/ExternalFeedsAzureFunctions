@@ -72,6 +72,8 @@ public class GitHub
     /// <returns></returns>
     public string ReadFileFromGitHub(string filename)
     {
+        log.Info($"Getting file from GitHub {filename}");
+
         try
         {
             // try to get the file (and with the file the last commit sha)
