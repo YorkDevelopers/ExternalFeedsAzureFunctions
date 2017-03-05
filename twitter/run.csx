@@ -9,6 +9,7 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Web;
 using System.Text;
@@ -216,8 +217,8 @@ private static List<tweet> GetTweets(string bearerToken)
 private static string GetCredentials(string consumerKey, string consumerSecret)
 {
     // Step 1 - URL Encode (RFC 1738).  Normally this will have no effect
-    consumerKey = HttpUtility.UrlEncode(consumerKey);
-    consumerSecret = HttpUtility.UrlEncode(consumerSecret);
+    consumerKey = WebUtility.UrlEncode(consumerKey);
+    consumerSecret = WebUtility.UrlEncode(consumerSecret);
 
     // Step 2 - Join them together
     var joined = $"{consumerKey}:{consumerSecret}";
