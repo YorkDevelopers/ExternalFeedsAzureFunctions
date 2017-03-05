@@ -1,5 +1,7 @@
-﻿public class url
+﻿public class urlEntity
 {
     public string expanded_url { get; set; }
+
+    public int[] indices { get; set; }
 }
 
