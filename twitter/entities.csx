@@ -2,6 +2,6 @@
 
 public class entities
 {
-    public List<url> urls { get; set; }
+    public List<urlEntity> urls { get; set; }
     public List<hashtag> hashtags { get; set; }
 }

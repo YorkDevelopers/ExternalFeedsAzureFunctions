@@ -6,7 +6,7 @@
 #load "TokenResult.csx"
 #load "tweet.csx"
 #load "user.csx"
-#load "url.csx"
+#load "urlEntity.csx"
 
 using System;
 using System.Linq;
@@ -47,9 +47,9 @@ public static void Run(TimerInfo myTimer, TraceWriter log)
         // If this is a re-tweet then take the text from the original tweet,
         // otherwise take it from this tweet
         if (!string.IsNullOrWhiteSpace(tweet.quoted_status?.text))
-            evt.Description = tweet.quoted_status.text;
+            evt.Description = TidyText(tweet.quoted_status.text, tweet.quoted_status.entities);
         else
-            evt.Description = tweet.text;
+            evt.Description = TidyText(tweet.text, tweet.entities);
 
         // We don't really have the name of the event,  so just use the name of the
         // person who tweeted it.
@@ -99,6 +99,47 @@ public static void Run(TimerInfo myTimer, TraceWriter log)
     var gitHubClient = new GitHub(log);
     gitHubClient.WriteFileToGitHub("_data/Twitter.yml", yaml);
 }
+
+/// <summary>
+/// Removes any URLs or Hash tags from the text
+/// </summary>
+/// <param name="text"></param>
+/// <param name="entities"></param>
+/// <returns></returns>
+private static string TidyText(string text, entities entities)
+{
+    if (entities?.hashtags != null)
+    {
+        foreach (var ht in entities.hashtags)
+        {
+            for (int i = ht.indices[0]; i < ht.indices[1]; i++)
+            {
+                text = ReplaceAtIndex(i, '~', text);
+            }
+        }
+    }
+
+    if (entities?.urls != null)
+    {
+        foreach (var ht in entities.urls)
+        {
+            for (int i = ht.indices[0]; i < ht.indices[1]; i++)
+            {
+                text = ReplaceAtIndex(i, '~', text);
+            }
+        }
+    }
+
+    return text.Replace("~","").Trim();
+}
+
+static string ReplaceAtIndex(int i, char value, string word)
+{
+    char[] letters = word.ToCharArray();
+    letters[i] = value;
+    return string.Join("", letters);
+}
+
 
 private static DateTime ParseDate(string created_at)
 {
