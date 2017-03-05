@@ -12,19 +12,16 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Web;
 using System.Text;
-using YorkDevelopers.Shared;
 using YamlDotNet.Serialization;
 using System.Diagnostics;
-using YorkDevelopers.TwitterFeed.Properties;
-
-
+using System.Configuration;
 
 public static void Run(TimerInfo myTimer, TraceWriter log)
 {
     log.Info($"C# Timer trigger function executed at: {DateTime.Now}");  
     // The key and secret assigned to our application by twitter
-    var consumerKey = Settings.Default.ConsumerKey;
-    var consumerSecret = Settings.Default.ConsumerSecret;
+    var consumerKey = ConfigurationManager.AppSettings["TWITTER_CONSUMER_KEY"];
+    var consumerSecret = ConfigurationManager.AppSettings["TWITTER_CONSUMER_SECRET"];
 
     // Encode our credentials into a single string
     var credentials = GetCredentials(consumerKey, consumerSecret);
