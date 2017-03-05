@@ -5,6 +5,8 @@
 #load "quoted_status.csx"
 #load "TokenResult.csx"
 #load "tweet.csx"
+#load "user.csx"
+#load "url.csx"
 
 using System;
 using System.Linq;
