@@ -1,3 +1,4 @@
+#load "event.csx"
 #load "responses.csx"
 #load "../Shared/common.csx"
 #load "../Shared/gitHub.csx"
