@@ -22,6 +22,7 @@ public static void Run(TimerInfo myTimer, TraceWriter log)
 
     var meetupToken = ConfigurationManager.AppSettings["MEETUPTOKEN"];
     var client = PrepareHttpClient(new Uri(URL));
+    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
     var events = GET<List<Event>>(client, $"/recommended/events?sign=true&key={meetupToken}&fields=group_photo&topic_category=" + TECH);
     var geoData = new GeoData();
 
