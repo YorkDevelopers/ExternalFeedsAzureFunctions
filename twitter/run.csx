@@ -1,5 +1,5 @@
-﻿#load "common.csx"
-#load "gitHub.csx"
+﻿#load "../Shared/common.csx"
+#load "../Shared/gitHub.csx"
 #load "entities.csx"
 #load "hashtag.csx"
 #load "quoted_status.csx"

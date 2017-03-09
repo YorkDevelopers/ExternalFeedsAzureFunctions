@@ -1,6 +1,6 @@
 #load "venue.csx"
-#load "common.csx"
-#load "gitHub.csx"
+#load "../Shared/common.csx"
+#load "../Shared/gitHub.csx"
 #load "responses.csx"
 
 using System;

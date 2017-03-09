@@ -1,5 +1,5 @@
-#load "common.csx"
-#load "gitHub.csx"
+#load "../Shared/common.csx"
+#load "../Shared/gitHub.csx"
 #load "document.csx"
 #load "childtag.csx"
 
