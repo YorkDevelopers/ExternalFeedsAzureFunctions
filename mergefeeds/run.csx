@@ -11,7 +11,7 @@ public static void Run(TimerInfo myTimer, TraceWriter log)
 {
     log.Info($"C# Timer trigger function executed at: {DateTime.Now}");  
 
-               var files = new List<string>() { "_data/EventBrite.yml", "_data/Meetup.yml", "_data/YPS.yml", "_data/Twitter.yml" };
+               var files = new List<string>() { "_data/EventBrite.yml", "_data/Meetup.yml", "_data/YPS.yml", "_data/Twitter.yml", "_data/TicketLeap.yml" };
 
             const string TARGETFILENAME = "_data/Events.yml";
 
