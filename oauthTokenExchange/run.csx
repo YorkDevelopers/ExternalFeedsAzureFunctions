@@ -42,7 +42,7 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
 
     var response = await POST<Response>(client, url, null);
 
-    return req.CreateResponse(HttpStatusCode.OK, "access_token " + response.access_token);
+    return req.CreateResponse(HttpStatusCode.OK, $"access_token {response.access_token}.  scope {response.scope}.   bearer {response.bearer}");
 }
 
 public static async Task<T> POST<T>(HttpClient client, string apiCall, HttpContent value)
@@ -55,6 +55,7 @@ public static async Task<T> POST<T>(HttpClient client, string apiCall, HttpConte
     }
     else
     {
+        log.Info("Got response");
         return await httpResponseMessage.Content.ReadAsAsync<T>();
     }
 }
