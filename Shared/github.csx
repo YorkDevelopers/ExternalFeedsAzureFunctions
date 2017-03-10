@@ -12,12 +12,23 @@ public class GitHub
     private readonly GitHubClient gitHubClient;
     private readonly TraceWriter log;
 
+    //C'tor for application oauth logins
     public GitHub(TraceWriter log)
     {
         // Set up our credentials to access git hub
         var token = ConfigurationManager.AppSettings["GITHUBTOKEN"];
         this.gitHubClient = new GitHubClient(new ProductHeaderValue("yorkDevelopersFeed"));
         this.gitHubClient.Credentials = new Credentials(token);
+
+        this.log = log;
+    }
+
+    //C'tor for when we have the an user's OAUTH access token
+    public GitHub(TraceWriter log, string accessToken)
+    {
+        // Set up our credentials to access git hub
+        this.gitHubClient = new GitHubClient(new ProductHeaderValue("yorkDevelopersFeed"));
+        this.gitHubClient.Credentials = new Credentials(accessToken);
 
         this.log = log;
     }
