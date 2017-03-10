@@ -25,7 +25,7 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
 
     // Write the data to git hub as this user
     var gitHubClient = new GitHub(log, accessToken);
-    gitHubClient.WriteFileToGitHub(FILENAME, data);
+    await gitHubClient.WriteFileToGitHubAsync(FILENAME, data);
 
     return req.CreateResponse(HttpStatusCode.OK);
 }
