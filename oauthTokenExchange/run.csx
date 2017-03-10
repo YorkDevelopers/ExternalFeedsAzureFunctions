@@ -2,6 +2,7 @@
 
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Configuration;
 public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceWriter log)
 {
@@ -29,7 +30,7 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
     //oAuthcode = oAuthcode ?? data?.code;
 
     var client = new HttpClient();
-    client.BaseAddress = "https://github.com";
+    client.BaseAddress = new Uri("https://github.com");
     client.DefaultRequestHeaders
           .Accept
           .Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -38,18 +39,24 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
     var client_token = ConfigurationManager.AppSettings["GITHUB_APP_CLIENT_TOKEN"];
     var redirect_uri = "http://localhost/oauthcomplete.html";
     var url = "/login/oauth/access_token?client_id=" + client_id + "&client_secret=" + client_token + "&code=" + code + "&redirect_uri=" + redirect_uri + "&state=" + state;
-    
-    var response = POST<Response>(client, url, null);
+
+    var response = await POST<Response>(client, url, null);
 
     return req.CreateResponse(HttpStatusCode.OK, "access_token " + response.access_token);
 }
 
-public static void POST(HttpClient client, string apiCall, object value)
+public static T POST<T>(HttpClient client, string apiCall, object value)
 {
     // Proxy the call onto our service.
-    var httpResponseMessage = client.PostAsync(apiCall, value).Result;
+    var httpResponseMessage = await client.PostAsync(apiCall, value);
     if (!httpResponseMessage.IsSuccessStatusCode)
     {
         throw new Exception(string.Format("Failed to POST to {0}.   Status {1}.  Reason {2}.", apiCall, (int)httpResponseMessage.StatusCode, httpResponseMessage.ReasonPhrase));
     }
+    else
+    {
+        return await httpResponseMessage.Content.ReadAsAsync<T>();
+    }
+
+
 }
