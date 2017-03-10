@@ -41,8 +41,14 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
     var url = "/login/oauth/access_token?client_id=" + client_id + "&client_secret=" + client_token + "&code=" + code + "&redirect_uri=" + redirect_uri + "&state=" + state;
 
     var response = await POST<Response>(client, url, null, log);
-
-    return req.CreateResponse(HttpStatusCode.OK, $"access_token {response.access_token}.  scope {response.scope}.   bearer {response.bearer}");
+    if (!string.IsNullOrWhiteSpace(response.error))
+    {
+        return req.CreateResponse(HttpStatusCode.BadRequest, $"{response.error} {response.error_description} {response.error_uri}");
+    }
+    else
+    {
+        return req.CreateResponse(HttpStatusCode.OK, response.access_token);
+    }
 }
 
 public static async Task<T> POST<T>(HttpClient client, string apiCall, HttpContent value, TraceWriter log)
@@ -55,7 +61,6 @@ public static async Task<T> POST<T>(HttpClient client, string apiCall, HttpConte
     }
     else
     {
-        log.Info(await httpResponseMessage.Content.ReadAsStringAsync());
         return await httpResponseMessage.Content.ReadAsAsync<T>();
     }
 }
