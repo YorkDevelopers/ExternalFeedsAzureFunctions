@@ -1,4 +1,3 @@
-#load "response.csx"
 #load "../Shared/github.csx"
 
 using System.Net;
