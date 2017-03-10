@@ -28,5 +28,6 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
     var gitHubClient = new GitHub(log, accessToken);
     gitHubClient.WriteFileToGitHub(FILENAME, data);
 
+    return req.CreateResponse(HttpStatusCode.OK);
 }
 
