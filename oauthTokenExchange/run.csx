@@ -37,7 +37,7 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
 
     var client_id = ConfigurationManager.AppSettings["GITHUB_APP_CLIENT_ID"];
     var client_token = ConfigurationManager.AppSettings["GITHUB_APP_CLIENT_TOKEN"];
-    var redirect_uri = "http://localhost/eventeditor/main.html";
+    var redirect_uri = "https://www.yorkdevelopers.org/eventeditor/main.html";
     var url = "/login/oauth/access_token?client_id=" + client_id + "&client_secret=" + client_token + "&code=" + code + "&redirect_uri=" + redirect_uri + "&state=" + state;
 
     var response = await POST<Response>(client, url, null, log);
