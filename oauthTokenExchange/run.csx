@@ -55,7 +55,7 @@ public static async Task<T> POST<T>(HttpClient client, string apiCall, HttpConte
     }
     else
     {
-        log.Info("Got response");
+        log.Info(await httpResponseMessage.Content.ReadAsString());
         return await httpResponseMessage.Content.ReadAsAsync<T>();
     }
 }
