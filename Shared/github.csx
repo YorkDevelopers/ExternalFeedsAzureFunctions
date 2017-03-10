@@ -105,4 +105,34 @@ public class GitHub
         return "";
     }
 
+    /// <summary>
+    /// Reads the contents of an existing file on github.  Returns "" if the file 
+    /// does not currently exist.
+    /// </summary>
+    /// <param name="filename">For example _data/Events.yml</param>
+    /// <returns></returns>
+    public async Task<string> ReadFileFromGitHubAsync(string filename)
+    {
+        try
+        {
+            // try to get the file (and with the file the last commit sha)
+            var existingFile = await gitHubClient.Repository.Content.GetAllContentsByRef(OWNER, REPRO, filename, BRANCH);
+            return existingFile.First().Content;
+        }
+        catch (AggregateException ae)
+        {
+            ae.Handle((x) =>
+            {
+                if (x is Octokit.NotFoundException)
+                {
+                    return true;
+                }
+                return false; // Let anything else stop the application.
+            });
+
+        }
+
+        return "";
+    }
+
 }

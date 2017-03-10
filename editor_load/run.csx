@@ -22,7 +22,7 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
 
     // Read the data out of git hub
     var gitHubClient = new GitHub(log, accessToken);
-    var data = gitHubClient.ReadFileFromGitHub(FILENAME);
+    var data = await gitHubClient.ReadFileFromGitHubAsync(FILENAME);
 
     return req.CreateResponse(HttpStatusCode.OK, data);
 }
