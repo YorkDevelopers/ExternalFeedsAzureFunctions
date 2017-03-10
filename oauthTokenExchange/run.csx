@@ -45,7 +45,7 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
     return req.CreateResponse(HttpStatusCode.OK, "access_token " + response.access_token);
 }
 
-public static T POST<T>(HttpClient client, string apiCall, object value)
+public async Task<T> POST<T>(HttpClient client, string apiCall, HttpContent value)
 {
     // Proxy the call onto our service.
     var httpResponseMessage = await client.PostAsync(apiCall, value);
