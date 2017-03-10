@@ -40,12 +40,12 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
     var redirect_uri = "http://localhost/oauthcomplete.html";
     var url = "/login/oauth/access_token?client_id=" + client_id + "&client_secret=" + client_token + "&code=" + code + "&redirect_uri=" + redirect_uri + "&state=" + state;
 
-    var response = await POST<Response>(client, url, null);
+    var response = await POST<Response>(client, url, null, log);
 
     return req.CreateResponse(HttpStatusCode.OK, $"access_token {response.access_token}.  scope {response.scope}.   bearer {response.bearer}");
 }
 
-public static async Task<T> POST<T>(HttpClient client, string apiCall, HttpContent value)
+public static async Task<T> POST<T>(HttpClient client, string apiCall, HttpContent value, TraceWriter log)
 {
     // Proxy the call onto our service.
     var httpResponseMessage = await client.PostAsync(apiCall, value);
