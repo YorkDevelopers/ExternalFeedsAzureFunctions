@@ -1,9 +1,13 @@
 #load "../Shared/github.csx"
+#load "../Shared/common.csx"
+#r "Newtonsoft.Json"
 
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Configuration;
+using YamlDotNet.Serialization;
+using System.Collections.Generic;
 
 // Function called by the manual event editor in order to load the yml file from git hub
 public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceWriter log)
@@ -22,8 +26,15 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
 
     // Read the data out of git hub
     var gitHubClient = new GitHub(log, accessToken);
-    var data = await gitHubClient.ReadFileFromGitHubAsync(FILENAME);
+    var yaml = await gitHubClient.ReadFileFromGitHubAsync(FILENAME);
 
-    return req.CreateResponse(HttpStatusCode.OK, data);
+    // The yml contains an array of events in our 'common' format.  Convert this into  a list of objects.
+    var deserializer = new Deserializer();
+    var allEvents = deserializer.Deserialize<List<Common>>(yaml);
+
+    // And then convert this into JSON as that is what we deal with in the front end.
+    var json = JsonConvert.SerializeObject(allEvents);
+
+    return req.CreateResponse(HttpStatusCode.OK, json);
 }
 
