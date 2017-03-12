@@ -8,6 +8,7 @@ using System.Net.Http.Headers;
 using System.Configuration;
 using YamlDotNet.Serialization;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 // Function called by the manual event editor in order to load the yml file from git hub
 public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceWriter log)
