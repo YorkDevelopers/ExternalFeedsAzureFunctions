@@ -24,19 +24,17 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
 
     if (accessToken == null)
         return req.CreateResponse(HttpStatusCode.BadRequest, "Please pass the accessToken is the query string");
-log.Info("Access Token" + accessToken);
+
     // Read the data out of git hub
     var gitHubClient = new GitHub(log, accessToken);
     var yaml = await gitHubClient.ReadFileFromGitHubAsync(FILENAME);
-log.Info(yaml);
+
     // The yml contains an array of events in our 'common' format.  Convert this into  a list of objects.
     var deserializer = new Deserializer();
     var allEvents = deserializer.Deserialize<List<Common>>(yaml);
-log.Info("Got List of Events");
 
     // And then convert this into JSON as that is what we deal with in the front end.
     var json = JsonConvert.SerializeObject(allEvents);
-log.Info("Converted to JSON");
     return req.CreateResponse(HttpStatusCode.OK, json);
 }
 
