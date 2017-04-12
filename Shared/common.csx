@@ -27,4 +27,7 @@ public class Common
 
     [YamlMember(typeof(string), Alias = "venue")]
     public string Venue { get;  set; }
+
+    [YamlMember(typeof(bool), Alias = "endorsed")]
+    public bool Endorsed { get;  set; }
 }
