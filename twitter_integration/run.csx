@@ -12,11 +12,6 @@ public static void Run(TimerInfo myTimer, TraceWriter log)
 {
     log.Info($"C# Timer trigger function executed at: {DateTime.Now}");  
 
-    // const string TWITTER_CONSUMER_KEY = "NvmGrs1vsVZXGMwmCoV0U4rzI";
-    // const string TWITTER_CONSUMER_KEY_SECRET = "wn5IHJyF0DnrQE0QviJksYzQiYajnb6gBmFCC1HmPL3H4EBUlO";
-    // const string TWITTER_ACCESS_TOKEN = "828513102983479296-l7IrYEnq6kwAcXsGT9pabL6xf8vEi8w";
-    // const string TWITTER_ACCESS_TOKEN_SECRET = "eE4UkJvXVFcSDvBC01HTCyFM8WqsZkdK3lh2p3dmoIC3J";
-
     var consumerKey = ConfigurationManager.AppSettings["TWITTER_YORKDEVELOPERS_CONSUMER_KEY"];
     var consumerSecret = ConfigurationManager.AppSettings["TWITTER_YORKDEVELOPERS_CONSUMER_SECRET"];
     var consumerAccessToken = ConfigurationManager.AppSettings["TWITTER_YORKDEVELOPERS_CONSUMER_ACCESS_TOKEN"];
@@ -30,11 +25,11 @@ public static void Run(TimerInfo myTimer, TraceWriter log)
     var yaml = gitHub.ReadFileFromGitHub(SOURCEFILENAME);
     var Events = deserializer.Deserialize<List<Common>>(yaml);
 
-    foreach (var event in Events)
+    foreach (var evt in Events)
     {
-        if ((event.StartDate - dateTime.Now()).TotalDays == 7 && event.Endorsed)
+        if ((evt.StartDate - dateTime.Now()).TotalDays == 7 && evt.Endorsed)
         {
-            SendTweet(event.name + " " + event.Starts.ToString("dd/M/yyyy") + " " + event.URL + " #codeyork");
+            SendTweet(evt.name + " " + evt.Starts.ToString("dd/M/yyyy") + " " + evt.URL + " #codeyork");
         } 
     }
                   
