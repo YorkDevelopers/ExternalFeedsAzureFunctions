@@ -4,6 +4,7 @@
 #load "geoData.csx"
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
@@ -16,18 +17,40 @@ public static void Run(TimerInfo myTimer, TraceWriter log)
     const string URL = "https://api.meetup.com";
     const string TECH = "292";
 
-    // Location of the Perky Peacock
-    const double LAT = 53.960636138916016;
-    const double LON = -1.0860970020294189;
-    const double LARGEST_DISTANCE = 25;
 
     var meetupToken = ConfigurationManager.AppSettings["MEETUPTOKEN"];
     var client = PrepareHttpClient(new Uri(URL));
     ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-    var events = GET<List<Event>>(client, $"/recommended/events?sign=true&key={meetupToken}&fields=group_photo&topic_category=" + TECH);
-    var geoData = new GeoData();
 
     var allEvents = new List<Common>();
+
+    var events = GET<List<Event>>(client, $"/recommended/events?sign=true&key={meetupToken}&fields=group_photo&topic_category=" + TECH);
+    AddEventsToList(events, allEvents);
+
+    events = GET<List<Event>>(client, $"/york-code-dojo/events?sign=true&key={meetupToken}&fields=group_photo");
+    AddEventsToList(events, allEvents);
+
+    events = GET<List<Event>>(client, $"/yorkdevelopers/events?sign=true&key={meetupToken}&fields=group_photo");
+    AddEventsToList(events, allEvents);
+
+    var serializer = new Serializer();
+    var yaml = serializer.Serialize(allEvents.Distinct());
+
+    // Push the file to git
+    var gitHubClient = new GitHub(log);
+    gitHubClient.WriteFileToGitHub("_data/Meetup.yml", yaml);
+
+}
+
+private static void AddEventsToList(List<Event> events, List<Common> allEvents)
+{
+    // Location of the Perky Peacock
+    const double LAT = 53.960636138916016;
+    const double LON = -1.0860970020294189;
+    const double LARGEST_DISTANCE = 25;
+    
+    var geoData = new GeoData();
+    
     foreach (var evt in events)
     {
         // Is this event near to us?
@@ -78,19 +101,11 @@ public static void Run(TimerInfo myTimer, TraceWriter log)
             common.Venue = evt.venue?.name;
 
             // Is this one of our meetups?
-            common.Endorsed = (evt.group.name=="York Developers");
+            common.Endorsed = (evt.group.name=="York Developers" || evt.group.name=="York Code Dojo");
 
             allEvents.Add(common);
         }
     }
-
-    var serializer = new Serializer();
-    var yaml = serializer.Serialize(allEvents);
-
-    // Push the file to git
-    var gitHubClient = new GitHub(log);
-    gitHubClient.WriteFileToGitHub("_data/Meetup.yml", yaml);
-
 }
 
 private static HttpClient PrepareHttpClient(Uri endPoint)
