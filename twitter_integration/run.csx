@@ -7,6 +7,7 @@ using System.IO;
 using System.Net;
 using YamlDotNet.Serialization;
 using TweetSharp;
+using System.Configuration;
 
 public static void Run(TimerInfo myTimer, TraceWriter log)
 {
