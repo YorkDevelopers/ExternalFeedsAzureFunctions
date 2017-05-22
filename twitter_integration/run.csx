@@ -14,6 +14,8 @@ public static void Run(TimerInfo myTimer, TraceWriter log)
 {
     log.Info($"C# Timer trigger function executed at: {DateTime.Now}");  
 
+    var consumerKey2 = ConfigurationManager.AppSettings["TWITTER_CONSUMER_KEY"];
+    var consumerKey3 = ConfigurationManager.AppSettings["DOES_NOT_EXIST"];
     var consumerKey = ConfigurationManager.AppSettings["TWITTER_YORKDEVELOPERS_CONSUMER_KEY"];
     var consumerSecret = ConfigurationManager.AppSettings["TWITTER_YORKDEVELOPERS_CONSUMER_SECRET"];
     var consumerAccessToken = ConfigurationManager.AppSettings["TWITTER_YORKDEVELOPERS_CONSUMER_ACCESS_TOKEN"];
