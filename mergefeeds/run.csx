@@ -15,8 +15,8 @@ public static void Run(TimerInfo myTimer, TraceWriter log)
 
     const string TARGETFILENAME = "_data/Events.yml";
 
-    var gitHub = new GitHub(log);
     var deserializer = new Deserializer();
+    var gitHub = new GitHub(log);
 
     var allEvents = new List<Common>();
     foreach (var file in files)
