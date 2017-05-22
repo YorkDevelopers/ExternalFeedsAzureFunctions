@@ -14,8 +14,6 @@ public static void Run(TimerInfo myTimer, TraceWriter log)
 {
     log.Info($"C# Timer trigger function executed at: {DateTime.Now}");  
 
-    var consumerKey2 = ConfigurationManager.AppSettings["TWITTER_CONSUMER_KEY"];
-    var consumerKey3 = ConfigurationManager.AppSettings["DOES_NOT_EXIST"];
     var consumerKey = ConfigurationManager.AppSettings["TWITTER_YORKDEVELOPERS_CONSUMER_KEY"];
     var consumerSecret = ConfigurationManager.AppSettings["TWITTER_YORKDEVELOPERS_CONSUMER_SECRET"];
     var consumerAccessToken = ConfigurationManager.AppSettings["TWITTER_YORKDEVELOPERS_CONSUMER_ACCESS_TOKEN"];
@@ -29,21 +27,23 @@ public static void Run(TimerInfo myTimer, TraceWriter log)
     var yaml = gitHub.ReadFileFromGitHub(SOURCEFILENAME);
     var Events = deserializer.Deserialize<List<Common>>(yaml);
 
+    var twitterApp = new TwitterService(consumerKey, consumerSecret);
+    twitterApp.AuthenticateWith(consumerAccessToken, consumerAccessTokenSecret);
+
     foreach (var evt in Events)
     {
         if (((evt.Starts - DateTime.Now).TotalDays == 7) && evt.Endorsed)
         {
-            SendTweet(evt.Name + " " + evt.Starts.ToString("dd/M/yyyy") + " " + evt.URL + " #codeyork");
+            SendTweet(twitterApp, evt.Name + " " + evt.Starts.ToString("dd/M/yyyy") + " " + evt.URL + " #codeyork");
         } 
     }
                   
 }
 
-public static TwitterStatus SendTweet(string tweetText)
+public static TwitterStatus SendTweet(TwitterService twitterApp, string tweetText)
 {
-    var twitterApp = new TwitterService(TWITTER_YORKDEVELOPERS_CONSUMER_KEY, TWITTER_YORKDEVELOPERS_CONSUMER_SECRET);
-    twitterApp.AuthenticateWith(TWITTER_YORKDEVELOPERS_CONSUMER_ACCESS_TOKEN, TWITTER_YORKDEVELOPERS_CONSUMER_ACCESS_TOKEN_SECRET);
-    return twitterApp.SendTweet(new SendTweetOptions { Status = tweetText });
+
+    return twitterApp.SendTweet(new TweetSharp.SendTweetOptions { Status = tweetText });
 }
 
 
