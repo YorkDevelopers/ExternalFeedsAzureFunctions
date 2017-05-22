@@ -44,7 +44,7 @@ public static void Run(TimerInfo myTimer, TraceWriter log)
         else
         {
             // We know the venue for the event,  so we can check that it's within X miles
-            var distance = geoData.distance(LAT, LON, evt.venue.lat, evt.venue.lon, 'M');
+            var distance = geoData.distance(LAT, LON, evt.venue?.lat ?? 0.0, evt.venue?.lon ?? 0.0, 'M');
             nearUs = (distance <= LARGEST_DISTANCE);
         }
 
