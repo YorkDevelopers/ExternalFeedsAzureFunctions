@@ -4,7 +4,7 @@
       "dependencies": {
         "YamlDotNet": "4.1.0",
         "Octokit": "0.24.0",
-        "TweetSharp": "2.0.0.0"
+        "TweetSharp": "2.3.1.0"
       }
     }
    }
