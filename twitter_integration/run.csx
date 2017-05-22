@@ -28,7 +28,7 @@ public static void Run(TimerInfo myTimer, TraceWriter log)
 
     foreach (var evt in Events)
     {
-        if ((evt.StartDate - dateTime.Now()).TotalDays == 7 && evt.Endorsed)
+        if ((evt.Starts - DateTime.Now()).TotalDays == 7 && evt.Endorsed)
         {
             SendTweet(evt.name + " " + evt.Starts.ToString("dd/M/yyyy") + " " + evt.URL + " #codeyork");
         } 
