@@ -42,8 +42,8 @@ public static void Run(TimerInfo myTimer, TraceWriter log)
 
 public static TwitterStatus SendTweet(TwitterService twitterApp, string tweetText)
 {
-
-    return twitterApp.SendTweet(new TweetSharp.SendTweetOptions(){ Status = tweetText });
+    var options = new TweetSharp.SendTweetOptions(){ Status = tweetText };
+    return twitterApp.SendTweet(options);
 }
 
 
