@@ -34,7 +34,7 @@ public static void Run(TimerInfo myTimer, TraceWriter log)
     {
         if (((evt.Starts - DateTime.Now).TotalDays == 7) && evt.Endorsed)
         {
-            SendTweet(twitterApp, evt.Name + " " + evt.Starts.ToString("dd/M/yyyy") + " " + evt.URL + " #codeyork");
+            SendTweet(twitterApp, evt.Name + " " + evt.Starts.ToString("dd/M/yyyy") + " " + evt.URL + " #codeyork #techforyork");
         } 
     }
                   
