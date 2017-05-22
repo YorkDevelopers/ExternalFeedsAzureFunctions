@@ -76,6 +76,10 @@ public static void Run(TimerInfo myTimer, TraceWriter log)
                 common.Ends = common.Starts + duration;
             }
             common.Venue = evt.venue?.name;
+
+            // Is this one of our meetups?
+            common.Endorsed = (evt.group.name=="York Developers");
+
             allEvents.Add(common);
         }
     }
