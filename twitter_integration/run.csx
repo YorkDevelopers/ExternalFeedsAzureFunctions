@@ -32,7 +32,7 @@ public static void Run(TimerInfo myTimer, TraceWriter log)
 
     foreach (var evt in Events)
     {
-        var daysUntilEvent = (evt.Starts - DateTime.Now).TotalDays;
+        var daysUntilEvent = (evt.Starts - DateTime.Now).Days;
         if (evt.Endorsed) 
         {
             log.Info($"{daysUntilEvent} days until {evt.Name}");
