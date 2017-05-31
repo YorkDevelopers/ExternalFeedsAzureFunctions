@@ -37,7 +37,7 @@ public static void Run(TimerInfo myTimer, TraceWriter log)
         {
             log.Info($"{daysUntilEvent} days until {evt.Name}");
         }
-        if ((daysUntilEvent == 7) && evt.Endorsed)
+        if ((daysUntilEvent == 6) && evt.Endorsed)
         {
             log.Info($"Tweeting about {evt.Name}");
             SendTweet(twitterApp, evt.Name + " " + evt.Starts.ToString("dd/M/yyyy") + " " + evt.URL + " #codeyork #techforyork");
