@@ -13,7 +13,7 @@ using System.Configuration;
 
 public static void Run(TimerInfo myTimer, TraceWriter log)
 {
-    log.Info($"C# Timer trigger function executed at: {DateTime.Now}");    
+    log.Info($"C# Timer trigger function executed at: {DateTime.Now}");
     const string URL = "https://api.meetup.com";
     const string TECH = "292";
 
@@ -26,20 +26,32 @@ public static void Run(TimerInfo myTimer, TraceWriter log)
 
     var events = GET<List<Event>>(client, $"/recommended/events?sign=true&key={meetupToken}&fields=group_photo&topic_category=" + TECH);
     AddEventsToList(events, allEvents);
+    log.Info("Got recommended events");
 
     events = GET<List<Event>>(client, $"/york-code-dojo/events?sign=true&key={meetupToken}&fields=group_photo");
     AddEventsToList(events, allEvents);
+    log.Info("Got Code Dojo events");
 
     events = GET<List<Event>>(client, $"/yorkdevelopers/events?sign=true&key={meetupToken}&fields=group_photo");
     AddEventsToList(events, allEvents);
+    log.Info("Got York Developers events");
+
+    var uniqueEventsList = allEvents.GroupBy(o => GetUniqueKey(o)).Select(g => g.First());
+    log.Info($"Reduced event list from {allEvents.Count()} to {uniqueEventsList.Count()}");
 
     var serializer = new Serializer();
-    var yaml = serializer.Serialize(allEvents.Distinct());
+    var yaml = serializer.Serialize(uniqueEventsList);
+    log.Info("Generated YAML");
 
     // Push the file to git
     var gitHubClient = new GitHub(log);
     gitHubClient.WriteFileToGitHub("_data/Meetup.yml", yaml);
+    log.Info("Pushed file to GitHub");
+}
 
+private static string GetUniqueKey(Common c)
+{
+    return c.Name + "^" + c.Starts + "^" + c.URL + "^" + c.Logo;
 }
 
 private static void AddEventsToList(List<Event> events, List<Common> allEvents)
@@ -48,9 +60,9 @@ private static void AddEventsToList(List<Event> events, List<Common> allEvents)
     const double LAT = 53.960636138916016;
     const double LON = -1.0860970020294189;
     const double LARGEST_DISTANCE = 25;
-    
+
     var geoData = new GeoData();
-    
+
     foreach (var evt in events)
     {
         // Is this event near to us?
@@ -101,7 +113,7 @@ private static void AddEventsToList(List<Event> events, List<Common> allEvents)
             common.Venue = evt.venue?.name;
 
             // Is this one of our meetups?
-            common.Endorsed = (evt.group.name=="York Developers" || evt.group.name=="York Code Dojo");
+            common.Endorsed = (evt.group.name == "York Developers" || evt.group.name == "York Code Dojo");
 
             allEvents.Add(common);
         }
