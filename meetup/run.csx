@@ -73,9 +73,9 @@ private static void AddEventsToList(List<Event> events, List<Common> allEvents)
         {
             // We don't have a venue,  so the best we can do is to check to see if the word York is 
             // in the description,  groupname or URL.
-            nearUs = evt.name.ToLower().Contains("york") ||
-                     evt.description.ToLower().Contains("york") ||
-                     evt.link.ToLower().Contains("york");
+            nearUs = (evt.name ?? "").ToLower().Contains("york") ||
+                     (evt.description ?? "").ToLower().Contains("york") ||
+                     (evt.link ?? "").ToLower().Contains("york");
         }
         else
         {
@@ -95,7 +95,7 @@ private static void AddEventsToList(List<Event> events, List<Common> allEvents)
             common.IsFree = ((evt.fee?.amount ?? 0) == 0);
 
             // Events optionally have a group photo
-            common.Logo = evt.group.photo?.thumb_link;
+            common.Logo = evt.group?.photo?.thumb_link;
 
             // The start time is held in milliseconds
             common.Starts = (new DateTime(1970, 1, 1)).AddMilliseconds(double.Parse(evt.time));
