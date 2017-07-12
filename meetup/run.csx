@@ -25,6 +25,7 @@ public static void Run(TimerInfo myTimer, TraceWriter log)
     var allEvents = new List<Common>();
 
     var events = GET<List<Event>>(client, $"/recommended/events?sign=true&key={meetupToken}&fields=group_photo&topic_category=" + TECH);
+    log.Info($"HTTP GET of recommended events - found {events.Count()}");
     AddEventsToList(events, allEvents);
     log.Info("Got recommended events");
 
