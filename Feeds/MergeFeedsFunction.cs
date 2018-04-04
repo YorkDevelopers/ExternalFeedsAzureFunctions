@@ -17,7 +17,7 @@ namespace Feeds
 
             var files = new List<string>() { "_data/EventBrite.yml", "_data/Meetup.yml", "_data/YPS.yml", "_data/Twitter.yml", "_data/TicketLeap.yml" };
 
-            const string TARGETFILENAME = "_data/Events2.yml";
+            const string TARGETFILENAME = "_data/Events.yml";
 
             var deserializer = new Deserializer();
             var gitHub = new GitHub(log);

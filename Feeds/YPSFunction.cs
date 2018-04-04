@@ -35,7 +35,7 @@ namespace Feeds
 
                 // Push the file to git
                 var gitHubClient = new GitHub(log);
-                gitHubClient.WriteFileToGitHub("_data/YPS2.yml", yaml);
+                gitHubClient.WriteFileToGitHub("_data/YPS.yml", yaml);
             }
 
             catch (Exception ex)

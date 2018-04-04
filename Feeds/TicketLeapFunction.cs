@@ -18,7 +18,7 @@ namespace Feeds
             log.Info($"C# Timer trigger function executed at: {DateTime.Now}");
 
             const string URL = "https://public-api.ticketleap.com";
-            const string FILENAME = "_data/TicketLeap2.yml";
+            const string FILENAME = "_data/TicketLeap.yml";
             const string LECTURE = "c15215f2-da03-4d08-8668-6ec90cdefe0e";
 
             // Use the TicketLeap API to find all the Lecture events in York

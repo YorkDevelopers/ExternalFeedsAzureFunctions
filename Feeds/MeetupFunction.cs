@@ -49,7 +49,7 @@ namespace Feeds
 
             // Push the file to git
             var gitHubClient = new GitHub(log);
-            gitHubClient.WriteFileToGitHub("_data/Meetup2.yml", yaml);
+            gitHubClient.WriteFileToGitHub("_data/Meetup.yml", yaml);
             log.Info("Pushed file to GitHub");
         }
 

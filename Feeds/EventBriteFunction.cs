@@ -21,7 +21,7 @@ namespace Feeds
 
             const string CATEGORY = "102"; //Science and Tech
             const string URL = "https://www.eventbriteapi.com";
-            const string FILENAME = "_data/EventBrite2.yml";
+            const string FILENAME = "_data/EventBrite.yml";
 
             // We keep a cache of venues so that we only have to fetch each one once.
             var venues = new Dictionary<string, Venue>();
