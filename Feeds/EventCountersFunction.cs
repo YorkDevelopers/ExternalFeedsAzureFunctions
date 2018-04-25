@@ -6,7 +6,7 @@ using Feeds.Shared;
 
 namespace Feeds
 {
-    class EventCountersFunction
+    public static class EventCountersFunction
     {
         [FunctionName("EventCounters")]
         public static void Run([TimerTrigger("0 12 3 * * *")]TimerInfo myTimer, TraceWriter log)
