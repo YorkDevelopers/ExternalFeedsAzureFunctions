@@ -14,21 +14,28 @@ namespace Feeds
 {
     public static class EventCountersFunction
     {
+        private static DateTime ToDatetime(Event evt)
+        => (new DateTime(1970, 1, 1)).AddMilliseconds(double.Parse(evt.time));
+
+
         [FunctionName("EventCounters")]
         public static void Run([TimerTrigger("0 12 3 * * *")]TimerInfo myTimer, TraceWriter log)
         {
             const string URL = "https://api.meetup.com";
+            log.Info("Line 1");
             var meetupToken = ConfigurationManager.AppSettings["MEETUPTOKEN"];
+            log.Info("Line 2");
             var client = PrepareHttpClient(new Uri(URL));
+            log.Info("Line 3");
             var allEvents = new List<Common>();
+            log.Info("Line 4");
 
-            var events = GET<List<Event>>(client, $"/yorkdevelopers/events?sign=true&key={meetupToken}&fields=group_photo&status=last");
-            AddEventsToList(events, allEvents);
+            var events = GET<List<Event>>(client, $"/yorkdevelopers/events?sign=true&key={meetupToken}&status=past");
             log.Info("Got York Developers events");
 
             // Count the number of events last year
-            var eventsLastYear = allEvents.Where(x => x.Starts.Year >= DateTime.Now.Year - 1).OrderBy(x => x.Starts);
-            var counteventsLastYear = eventsLastYear.Count();
+            var counteventsLastYear = events.Count(x =>  ToDatetime(x).Year >= DateTime.Now.Year - 1);
+            log.Info("counteventsLastYear: " + counteventsLastYear);
 
             var eventCounterList = new CounterList();
             eventCounterList.Meetups_2018 = 100;
