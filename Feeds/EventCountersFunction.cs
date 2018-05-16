@@ -35,10 +35,11 @@ namespace Feeds
 
             // Count the number of events last year
             var counteventsLastYear = events.Count(x =>  ToDatetime(x).Year >= DateTime.Now.Year - 1);
+            var counteventsThisYear = events.Count(x => ToDatetime(x).Year == DateTime.Now.Year);
             log.Info("counteventsLastYear: " + counteventsLastYear);
 
             var eventCounterList = new CounterList();
-            eventCounterList.Meetups_2018 = 100;
+            eventCounterList.Meetups_2018 = counteventsThisYear;
             eventCounterList.Meetups_2017 = counteventsLastYear;
             eventCounterList.Meetups_This_Month = 10;
             eventCounterList.Meetups_This_Week = 3;
