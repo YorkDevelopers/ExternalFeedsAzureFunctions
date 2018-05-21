@@ -34,15 +34,21 @@ namespace Feeds
             log.Info("Got York Developers events");
 
             // Count the number of events last year
-            var counteventsLastYear = events.Count(x =>  ToDatetime(x).Year >= DateTime.Now.Year - 1);
-            var counteventsThisYear = events.Count(x => ToDatetime(x).Year == DateTime.Now.Year);
-            log.Info("counteventsLastYear: " + counteventsLastYear);
+            var countEventsLastYear = events.Count(x =>  ToDatetime(x).Year >= DateTime.Now.Year - 1);
+            var countEventsThisYear = events.Count(x => ToDatetime(x).Year == DateTime.Now.Year);
+            var countEventsThisMonth = events.Count(x => ToDatetime(x).Month == DateTime.Now.Month);
+            var countEventsThisWeek = events.Count(x => ToDatetime(x) >= DateTime.Now.AddDays(-7));
+
+            log.Info("countEventsLastYear: " + countEventsLastYear);
+            log.Info("countEventsThisYear: " + countEventsThisYear);
+            log.Info("countEventsThisMonth: " + countEventsThisMonth);
+            log.Info("countEventsThisMonthWeek: " + countEventsThisWeek);
 
             var eventCounterList = new CounterList();
-            eventCounterList.Meetups_2018 = counteventsThisYear;
-            eventCounterList.Meetups_2017 = counteventsLastYear;
-            eventCounterList.Meetups_This_Month = 10;
-            eventCounterList.Meetups_This_Week = 3;
+            eventCounterList.Meetups_2018 = countEventsThisYear;
+            eventCounterList.Meetups_2017 = countEventsLastYear;
+            eventCounterList.Meetups_This_Month = countEventsThisMonth;
+            eventCounterList.Meetups_This_Week = countEventsThisWeek;
 
             var serializer = new Serializer();
             var yaml = serializer.Serialize(eventCounterList);
@@ -50,7 +56,6 @@ namespace Feeds
             // Push the file to git
             var gitHubClient = new GitHub(log);
             gitHubClient.WriteFileToGitHub("_data/EventCounter.yml", yaml);
-
         }
 
         private static HttpClient PrepareHttpClient(Uri endPoint)
