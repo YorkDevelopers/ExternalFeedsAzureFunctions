@@ -36,7 +36,7 @@ namespace Feeds
             // Count the number of events last year
             var countEventsLastYear = events.Count(x =>  ToDatetime(x).Year == DateTime.Now.Year - 1);
             var countEventsThisYear = events.Count(x => ToDatetime(x).Year == DateTime.Now.Year);
-            var countEventsThisMonth = events.Count(x => ToDatetime(x).Month == DateTime.Now.Month);
+            var countEventsThisMonth = events.Count(x => (ToDatetime(x).Month == DateTime.Now.Month) && (ToDatetime(x).Year == DateTime.Now.Year));
             var countEventsThisWeek = events.Count(x => ToDatetime(x) >= DateTime.Now.AddDays(-7));
 
             log.Info("countEventsLastYear: " + countEventsLastYear);
