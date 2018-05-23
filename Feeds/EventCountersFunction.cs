@@ -30,7 +30,7 @@ namespace Feeds
             var allEvents = new List<Common>();
             log.Info("Line 4");
 
-            var events = GET<List<Event>>(client, $"/yorkdevelopers/events?sign=true&key={meetupToken}&status=past");
+            var events = GET<List<Event>>(client, $"/yorkdevelopers/events?sign=true&key={meetupToken}&status=past&desc=true");
             log.Info("Got York Developers events");
 
             // Count the number of events last year
@@ -50,10 +50,10 @@ namespace Feeds
             }
 
             var eventCounterList = new CounterList();
-            eventCounterList.Meetups_2018 = countEventsThisYear;
             eventCounterList.Meetups_2017 = countEventsLastYear;
+            eventCounterList.Meetups_2018 = countEventsThisYear;
             eventCounterList.Meetups_This_Month = countEventsThisMonth;
-            eventCounterList.Meetups_This_Week = countEventsThisWeek + 1; // Added so that it displays a value
+            eventCounterList.Meetups_This_Week = countEventsThisWeek; // Added so that it displays a value
 
             var serializer = new Serializer();
             var yaml = serializer.Serialize(eventCounterList);
