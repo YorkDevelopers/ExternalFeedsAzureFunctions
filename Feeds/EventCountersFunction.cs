@@ -34,7 +34,7 @@ namespace Feeds
             log.Info("Got York Developers events");
 
             // Count the number of events last year
-            var countEventsLastYear = events.Count(x =>  ToDatetime(x).Year >= DateTime.Now.Year - 1);
+            var countEventsLastYear = events.Count(x =>  ToDatetime(x).Year == DateTime.Now.Year - 1);
             var countEventsThisYear = events.Count(x => ToDatetime(x).Year == DateTime.Now.Year);
             var countEventsThisMonth = events.Count(x => ToDatetime(x).Month == DateTime.Now.Month);
             var countEventsThisWeek = events.Count(x => ToDatetime(x) >= DateTime.Now.AddDays(-7));
