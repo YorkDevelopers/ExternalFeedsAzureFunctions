@@ -44,6 +44,11 @@ namespace Feeds
             log.Info("countEventsThisMonth: " + countEventsThisMonth);
             log.Info("countEventsThisWeek: " + countEventsThisWeek);
 
+            foreach (var evt in events)
+            {
+                log.Info(evt.description + "|" + evt.time);
+            }
+
             var eventCounterList = new CounterList();
             eventCounterList.Meetups_2018 = countEventsThisYear;
             eventCounterList.Meetups_2017 = countEventsLastYear;
