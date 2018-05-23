@@ -46,7 +46,7 @@ namespace Feeds
 
             foreach (var evt in events)
             {
-                log.Info(evt.description + "|" + evt.time);
+                log.Info(evt.description + "|" + ToDatetime(evt));
             }
 
             var eventCounterList = new CounterList();
