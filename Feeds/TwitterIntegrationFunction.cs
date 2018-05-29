@@ -43,10 +43,42 @@ namespace Feeds
                 if ((daysUntilEvent == 6) && evt.Endorsed)
                 {
                     log.Info($"Tweeting about {evt.Name}");
-                    SendTweet(twitterApp, evt.Name + " " + evt.Starts.ToString("d MMM yyyy") + " " + evt.URL + " #CodeYork #TechForYork");
+                    var tweetStr = evt.Name + " - " + 
+                                    evt.Starts.ToString("d") + GetDateSuffix(evt.Starts.Day) + " " + 
+                                    evt.Starts.ToString("MMM yyyy") + " " 
+                                    + evt.URL + 
+                                    " #YorkDevelopers #CodeYork #TechForYork";
+                    SendTweet(twitterApp, tweetStr);
+                    log.Info(tweetStr);
                 }
             }
+        }
 
+        public static string GetDateSuffix(int dayPartofDate)
+        {
+            var dateSuffix = "";
+
+            switch (dayPartofDate)
+            {
+                case 1:
+                case 21:
+                case 31:
+                    dateSuffix = "st";
+                    break;
+                case 2:
+                case 22:
+                    dateSuffix = "nd";
+                    break;
+                case 3:
+                case 23:
+                    dateSuffix = "rd";
+                    break;
+                default:
+                    dateSuffix = "th";
+                    break;
+            }
+
+            return dateSuffix;
         }
 
         public static TwitterStatus SendTweet(TwitterService twitterApp, string tweetText)
