@@ -44,7 +44,7 @@ namespace Feeds
                 {
                     log.Info($"Tweeting about {evt.Name}");
                     var tweetStr = evt.Name + " - " + 
-                                    evt.Starts.ToString("d") + GetDateSuffix(evt.Starts.Day) + " " + 
+                                    evt.Starts.Day + GetDateSuffix(evt.Starts.Day) + " " + 
                                     evt.Starts.ToString("MMM yyyy") + " " 
                                     + evt.URL + 
                                     " #YorkDevelopers #CodeYork #TechForYork";
