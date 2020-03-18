@@ -15,6 +15,8 @@ namespace Feeds
         [FunctionName("TwitterIntegration")]
         public static void Run([TimerTrigger("0 0 4 * * *")]TimerInfo myTimer, TraceWriter log)
         {
+            return;
+
             log.Info($"C# Timer trigger function executed at: {DateTime.Now}");
 
             var consumerKey = ConfigurationManager.AppSettings["TWITTER_YORKDEVELOPERS_CONSUMER_KEY"];
