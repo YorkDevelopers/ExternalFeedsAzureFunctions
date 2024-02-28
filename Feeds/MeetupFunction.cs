@@ -40,6 +40,14 @@ namespace Feeds
             AddEventsToList(events, allEvents);
             log.Info("Got York Developers events");
 
+            events = GET<List<Event>>(client, $"/accu-york/events?sign=true&key={meetupToken}&fields=group_photo");
+            AddEventsToList(events, allEvents);
+            log.Info("Got ACCU York events");
+
+            events = GET<List<Event>>(client, $"/dotnetYork/events?sign=true&key={meetupToken}&fields=group_photo");
+            AddEventsToList(events, allEvents);
+            log.Info("Got dotnet York events");
+
             var uniqueEventsList = allEvents.GroupBy(o => GetUniqueKey(o)).Select(g => g.First());
             log.Info($"Reduced event list from {allEvents.Count()} to {uniqueEventsList.Count()}");
 
